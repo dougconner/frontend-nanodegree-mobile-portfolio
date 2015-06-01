@@ -8,10 +8,10 @@
     <title>Cameron Pittman: Portfolio</title>
 
     <style>
-      /*style.css added as below to avoid repaint that
-      happens when using the pagespeed technique used for
-      print.css
-*/      html {
+      /*
+      The following style needs to be available immediately
+      */
+      html {
         font-size: 100%;
         overflow-y: scroll;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -106,7 +106,7 @@
           </li>
 
           <li>
-            <img style="width: 100px;" src="views/images/pizzeria.jpg">
+            <img style="width: 100px;" src="views/images/pizzeria-small.jpg">
             <a href="views/pizza.html">Cam's Pizzeria</a>
             <p>Who wants a performant pizza?</p>
           </li>
@@ -133,6 +133,5 @@
       if (raf) raf(cb);
       else window.addEventListener('load', cb);
     </script>
-
   </body>
 </html>
