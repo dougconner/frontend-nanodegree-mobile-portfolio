@@ -18,6 +18,7 @@ cameron *at* udacity *dot* com
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
+"use strict";
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
   "Pepperoni",
@@ -422,7 +423,7 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
 
-    // Slider value is percent width
+  // Slider value is percent width, 4, 3, or 2 columns
   function sizeSwitcher (size) {
     switch(size) {
       case "1":
@@ -437,17 +438,16 @@ var resizePizzas = function(size) {
   }
 
   var newwidth = sizeSwitcher(size) + '%';
-  console.log("newwidth = ", newwidth);
 
   // Iterates through pizza elements on the page and changes their widths
-  function changePizzaSizes(size) {
+  function changePizzaSizes() {
     var randomPizzas = document.getElementsByClassName("randomPizzaContainer");
     for (var i = 0; i < randomPizzas.length; i++) {
       randomPizzas[i].style.width = newwidth;
     }
   }
 
-  changePizzaSizes(size);
+  changePizzaSizes();
 
   // User Timing API is awesome
   window.performance.mark("mark_end_resize");
@@ -500,8 +500,8 @@ function updatePositions() {
   }
 
   var items = document.getElementsByClassName('mover');
-  for (var i = 0; i < items.length; i++) {
-    items[i].style.left = items[i].basicLeft + 100 * phase[i % 5] + 'px';
+  for (var j = 0; j < items.length; j++) {
+    items[j].style.left = items[j].basicLeft + 100 * phase[j % 5] + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -526,7 +526,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Screen resize support needed for production
   var numberOfPizzas = cols * Math.ceil(window.innerHeight / s);
 
-  console.log("number of pizzas = ", numberOfPizzas);
   var movingPizzas1 = document.getElementById("movingPizzas1");
   for (var i = 0; i < numberOfPizzas; i++) {
     var elem = document.createElement('img');
