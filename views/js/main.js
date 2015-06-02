@@ -422,8 +422,7 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-
-  // Slider value is percent width, 4, 3, or 2 columns
+  // Slider value is percent width resulting in 4, 3, or 2 columns
   function sizeSwitcher (size) {
     switch(size) {
       case "1":
@@ -458,7 +457,7 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
-// This for-loop actually creates and appends all of the pizzas when the page loads
+// This for-loop creates and appends all of the pizzas when the page loads
 var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
@@ -492,13 +491,14 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  // compute phase array values
+  // compute constant phase array values for scroll position
   var scrollMeasure = document.body.scrollTop / 1250;
   var phase = [];
   for (var i = 0; i < 5; i++) {
     phase.push(Math.sin((scrollMeasure) + (i % 5)));
   }
 
+  // compute item-dependent phase values and define position
   var items = document.getElementsByClassName('mover');
   for (var j = 0; j < items.length; j++) {
     items[j].style.left = items[j].basicLeft + 100 * phase[j % 5] + 'px';
@@ -517,13 +517,12 @@ function updatePositions() {
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
 
-// Generates the sliding pizzas when the page loads.
-document.addEventListener('DOMContentLoaded', function() {
+// Generate the sliding pizzas
+function generatePizzas() {
   var cols = 8;
   var s = 256;
 
-  // Number of pizzas sized to fit the initial viewport height
-  // Screen resize support needed for production
+  // Limit the number of sliding pizzas to fit the viewport height
   var numberOfPizzas = cols * Math.ceil(window.innerHeight / s);
 
   var movingPizzas1 = document.getElementById("movingPizzas1");
@@ -537,5 +536,25 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     movingPizzas1.appendChild(elem);
   }
+
+}
+
+// Generates the sliding pizzas when the page loads.
+document.addEventListener('DOMContentLoaded', function() {
+  generatePizzas();
   updatePositions();
 });
+
+// If the viewport is resized, remove and re-generate the sliding pizzas
+window.addEventListener('resize', function() {
+  // remove child elements from movingPizzas1
+  var pizzaNode = document.getElementById("movingPizzas1");
+  while (pizzaNode.firstChild) {
+    pizzaNode.removeChild(pizzaNode.firstChild);
+  }
+
+  // Generate the new pizzas
+  generatePizzas();
+  updatePositions();
+});
+
